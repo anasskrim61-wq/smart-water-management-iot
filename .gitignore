@@ -1,0 +1,127 @@
+# ============================================================
+# .gitignore — Smart Urban Water Management System
+# ============================================================
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pdb
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+eggs/
+parts/
+var/
+sdist/
+develop-eggs/
+.installed.cfg
+lib/
+lib64/
+.eggs/
+
+# ---- Virtual Environments ----
+.venv/
+venv/
+ENV/
+env/
+.env/
+env.bak/
+venv.bak/
+
+# ---- Environment Variables / Secrets ----
+.env
+.env.local
+.env.production
+config/config.local.yml
+secrets/
+credentials.json
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# ---- Database Files ----
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/*.sqlite
+data/*.sqlite3
+
+# ---- AI Model Artifacts ----
+models/
+*.pkl
+*.joblib
+*.h5
+*.onnx
+*.tflite
+
+# ---- Logs ----
+logs/
+*.log
+*.log.*
+log_backup/
+
+# ---- IDE / Editor ----
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ---- Arduino / PlatformIO ----
+.pio/
+.pioenvs/
+.piolibdeps/
+*.elf
+*.bin
+*.hex
+*.map
+build_cache/
+
+# ---- Jupyter Notebooks ----
+.ipynb_checkpoints/
+*.ipynb
+
+# ---- Coverage & Test Reports ----
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+nosetests.xml
+test-results/
+
+# ---- Node.js (if dashboard frontend added later) ----
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# ---- OS Artifacts ----
+.DS_Store
+.AppleDouble
+.LSOverride
+Desktop.ini
+$RECYCLE.BIN/
+ehthumbs.db
+
+# ---- Backup Files ----
+*.bak
+*.backup
+*.tmp
+*.temp
+
+# ---- Documentation Build ----
+docs/_build/
+docs/site/
+site/

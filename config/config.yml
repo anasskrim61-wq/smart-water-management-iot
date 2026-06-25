@@ -1,0 +1,143 @@
+# =============================================================================
+# config.yml
+# Smart Urban Water Resource Management System — Central Configuration
+#
+# Author : Anass Krim
+# Date   : 2025-10-01
+#
+# This file controls all runtime parameters. Copy to config.local.yml
+# and edit for your deployment. config.local.yml is excluded from git
+# to protect secrets. Never commit broker credentials to version control.
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# MQTT Broker Settings
+# -----------------------------------------------------------------------------
+mqtt:
+  broker_host: "192.168.1.100"       # IP address of your MQTT broker (Raspberry Pi)
+  broker_port: 1883                   # Default unencrypted port
+  # broker_port: 8883                 # Use 8883 for TLS/SSL
+  keepalive: 60                       # Seconds between PINGREQ keepalive packets
+  # username: "mqtt_user"             # Uncomment if broker requires authentication
+  # password: "mqtt_password"         # Store secrets in .env, not here
+  # tls_enabled: false                # Set to true + provide cert paths for TLS
+  # tls_ca_cert: "certs/ca.crt"
+  # tls_client_cert: "certs/client.crt"
+  # tls_client_key: "certs/client.key"
+  topic_prefix: "water"              # Root topic prefix (e.g., water/nodes/...)
+
+# -----------------------------------------------------------------------------
+# Database Settings
+# -----------------------------------------------------------------------------
+database:
+  path: "data/water_data.db"          # SQLite database file path
+  backup_enabled: true                # Enable daily automated backups
+  backup_dir: "data/backups"          # Directory for backup files
+  backup_time: "02:00"                # UTC time to run daily backup (HH:MM)
+  retention_days: 90                  # Delete readings older than N days
+
+# -----------------------------------------------------------------------------
+# REST API / Flask Settings
+# -----------------------------------------------------------------------------
+api:
+  host: "0.0.0.0"                     # Bind to all interfaces (use 127.0.0.1 locally)
+  port: 5000
+  debug: false                        # NEVER enable in production
+  cors_origins:                       # Allowed CORS origins for browser clients
+    - "http://localhost:3000"
+    - "http://192.168.1.0/24"
+
+# -----------------------------------------------------------------------------
+# Sensor Thresholds — Alert Triggers
+# Modify these values to match your specific water network design limits.
+# -----------------------------------------------------------------------------
+thresholds:
+  # Flow rate thresholds (L/min)
+  flow_rate_min: 0.5                  # WARNING if flow drops below this (blocked pipe)
+  flow_rate_max: 45.0                 # WARNING if flow exceeds this (burst pipe)
+
+  # Pressure thresholds (kPa)
+  pressure_min: 100.0                 # CRITICAL if pressure drops below this (leak/burst)
+  pressure_max: 600.0                 # WARNING if pressure exceeds this (overpressure)
+  pressure_drop_threshold: 50.0      # kPa sudden drop within 30 s → CRITICAL leak alert
+
+  # Turbidity thresholds (NTU — WHO drinking water guideline: < 4 NTU)
+  turbidity_max: 100.0               # WARNING if turbidity exceeds this
+  turbidity_critical: 500.0          # CRITICAL — severe contamination suspected
+
+  # Temperature thresholds (°C)
+  temperature_min: 2.0               # WARNING — near-freezing, pipe freeze risk
+  temperature_max: 35.0              # WARNING — high temperature in distribution pipe
+
+  # Battery thresholds (mV)
+  battery_mv_warning: 3500           # WARNING — node battery running low
+  battery_mv_critical: 3200          # CRITICAL — node likely to power off soon
+
+# -----------------------------------------------------------------------------
+# AI / Machine Learning Settings
+# -----------------------------------------------------------------------------
+ai_model:
+  model_path: "models/leak_detector.joblib"  # Persisted model file
+  contamination: 0.05                # Expected fraction of anomalies (5%)
+  n_estimators: 200                  # Number of Isolation Forest trees
+  max_samples: "auto"                # Samples per tree (256 or n_samples)
+  random_state: 42                   # Random seed for reproducibility
+  retrain_interval_days: 7           # Retrain model every N days
+  min_training_samples: 500          # Minimum readings before first training
+  wave_speed_ms: 1200.0              # Pressure wave speed in pipes (m/s)
+
+# -----------------------------------------------------------------------------
+# Notifications / Alerting
+# -----------------------------------------------------------------------------
+notifications:
+  # Slack/generic webhook (set to null to disable)
+  webhook_url: null                   # "https://hooks.slack.com/services/..."
+
+  # Email (SMTP) — set enabled: true and fill SMTP details
+  email:
+    enabled: false
+    smtp_host: "smtp.gmail.com"
+    smtp_port: 587
+    use_tls: true
+    sender: "alerts@water-system.local"
+    recipients:
+      - "operator@municipality.ma"
+    # Store password in .env: EMAIL_PASSWORD=xxxxx
+    password_env_var: "EMAIL_PASSWORD"
+
+  # Alert cooldown — avoid spamming the same alert repeatedly
+  cooldown_minutes: 10                # Min minutes between identical alerts per node
+
+# -----------------------------------------------------------------------------
+# Logging
+# -----------------------------------------------------------------------------
+logging:
+  level: "INFO"                       # DEBUG | INFO | WARNING | ERROR
+  log_file: "logs/gateway.log"
+  max_bytes: 10485760                 # 10 MB per log file
+  backup_count: 5                     # Keep 5 rotated log files
+
+# -----------------------------------------------------------------------------
+# Node Registration (optional static configuration)
+# Nodes can also register themselves dynamically via MQTT status messages.
+# -----------------------------------------------------------------------------
+nodes:
+  - node_id: "node_A"
+    location: "Pipe Junction 01 — District Agdal"
+    latitude: 33.9716
+    longitude: -6.8498
+
+  - node_id: "node_B"
+    location: "Pipe Junction 07 — District Hassan"
+    latitude: 33.9942
+    longitude: -6.8517
+
+  - node_id: "node_C"
+    location: "Reservoir Outlet — Zone Industrielle"
+    latitude: 33.9553
+    longitude: -6.8726
+
+  - node_id: "node_D"
+    location: "Pressure Zone 3 — Hay Riad"
+    latitude: 33.9583
+    longitude: -6.8342
