@@ -465,7 +465,7 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 [![GitHub](https://img.shields.io/badge/GitHub-anass--krim-181717?style=flat-square&logo=github)](https://github.com/anass-krim)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Anass%20Krim-0A66C2?style=flat-square&logo=linkedin)](https://linkedin.com/in/anass-krim)
-[![Email](https://img.shields.io/badge/Email-anass.krim%40ensam.ac.ma-D14836?style=flat-square&logo=gmail)](mailto:anass.krim@ensam.ac.ma)
+[![Email](https://img.shields.io/badge/Email-anass.krim%40ensam.ac.ma-D14836?style=flat-square&logo=gmail)](mailto:anass.krim@etu.uae.ac.ma)
 
 ---
 
